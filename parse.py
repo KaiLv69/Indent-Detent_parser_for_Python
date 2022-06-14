@@ -42,8 +42,6 @@ def post_process_code(code):
             number_indent = line.count("INDENT ")
             tabs += "    " * number_indent
             line = line.replace("INDENT " * number_indent, tabs)
-            # tabs += "    "
-            # line = line.replace("INDENT ", tabs)
         elif line.startswith("DEDENT"):
             number_dedent = line.count("DEDENT")
             tabs = tabs[4 * number_dedent:]
