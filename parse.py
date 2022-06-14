@@ -10,6 +10,8 @@ def pre_process_code(raw_text):
         rem = l1 - len(list[idx]) - indent * 4
         indent_t = indent
 
+        list[idx] = " " * rem + list[idx]
+
         if indent_t > stack[-1]:
             while indent_t > stack[-1]:
                 list[idx] = "INDENT " + list[idx]
@@ -21,9 +23,6 @@ def pre_process_code(raw_text):
                 indent_t = indent_t + 1
             while indent < stack[-1]:
                 stack.pop()
-
-        list[idx] = " " * rem + list[idx]
-
     text = "NEW_LINE".join(list)
     return text
 
@@ -37,11 +36,13 @@ def post_process_code(code):
     lines = code.split("NEW_LINE")
     tabs = ""
     for i, line in enumerate(lines):
-        line = line.strip()
+        # line = line.strip()
         if line.startswith("INDENT "):
             number_indent = line.count("INDENT ")
             tabs += "    " * number_indent
             line = line.replace("INDENT " * number_indent, tabs)
+            # tabs += "    "
+            # line = line.replace("INDENT ", tabs)
         elif line.startswith("DEDENT"):
             number_dedent = line.count("DEDENT")
             tabs = tabs[4 * number_dedent:]
@@ -73,8 +74,8 @@ class Net(torch.nn.Module):
 
         self.basic_layer_2 = torch.nn.Sequential(
             torch.nn.Conv2d(
-                in_channels=64,
-                out_channels=128, 
+              in_channels=64,
+              out_channels=128, 
                 kernel_size=4, 
                 stride=2, 
                 padding=0
